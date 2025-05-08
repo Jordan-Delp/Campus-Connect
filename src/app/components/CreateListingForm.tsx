@@ -1,40 +1,34 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+type FormData = {
+  title: string;
+  description: string;
+  price: number;
+  category: string;
+};
 
 export default function CreateListingForm() {
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    price: '',
-    category: '',
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<FormData>();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: FormData) => {
     try {
       const response = await fetch('/api/listings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          price: parseFloat(formData.price),
-        }),
+        body: JSON.stringify(data),
       });
 
       if (response.ok) {
-        setFormData({
-          title: '',
-          description: '',
-          price: '',
-          category: '',
-        });
+        reset();
         alert('Listing created successfully!');
       } else {
         alert('Failed to create listing.');
@@ -46,55 +40,65 @@ export default function CreateListingForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div>
         <label className="block text-sm font-medium text-gray-700">Title</label>
         <input
           type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          required
+          {...register('title', { required: 'Title is required' })}
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
         />
+        {errors.title && (
+          <p className="text-red-600 text-sm mt-1">{errors.title.message}</p>
+        )}
       </div>
+
       <div>
         <label className="block text-sm font-medium text-gray-700">Description</label>
         <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          required
+          {...register('description', { required: 'Description is required' })}
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
         />
+        {errors.description && (
+          <p className="text-red-600 text-sm mt-1">{errors.description.message}</p>
+        )}
       </div>
+
       <div>
         <label className="block text-sm font-medium text-gray-700">Price</label>
         <input
           type="number"
-          name="price"
-          value={formData.price}
-          onChange={handleChange}
-          required
+          step="0.01"
+          {...register('price', {
+            required: 'Price is required',
+            valueAsNumber: true,
+            min: { value: 0.01, message: 'Price must be at least $0.01' },
+          })}
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
         />
+        {errors.price && (
+          <p className="text-red-600 text-sm mt-1">{errors.price.message}</p>
+        )}
       </div>
+
       <div>
         <label className="block text-sm font-medium text-gray-700">Category</label>
         <input
           type="text"
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          required
+          {...register('category', { required: 'Category is required' })}
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
         />
+        {errors.category && (
+          <p className="text-red-600 text-sm mt-1">{errors.category.message}</p>
+        )}
       </div>
+
       <button
         type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+        disabled={isSubmitting}
+        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
       >
-        Create Listing
+        {isSubmitting ? 'Submitting...' : 'Create Listing'}
       </button>
     </form>
   );
