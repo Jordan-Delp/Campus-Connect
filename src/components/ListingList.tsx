@@ -13,9 +13,10 @@ interface Listing {
 interface Props {
   listings: Listing[];
   showDelete?: boolean;
+  showEdit?: boolean;
 }
 
-export default function ListingList({ listings, showDelete = false }: Props) {
+export default function ListingList({ listings, showDelete = false, showEdit = false }: Props) {
   const handleDelete = async (id: string) => {
     const confirmed = confirm('Are you sure you want to delete this listing?');
     if (!confirmed) return;
@@ -60,6 +61,15 @@ export default function ListingList({ listings, showDelete = false }: Props) {
             >
               Delete
             </button>
+          )}
+
+          {showEdit && (
+            <a
+              href={`/listings/edit/${listing._id}`}
+              className="mt-2 text-blue-600 hover:underline block"
+              >
+                Edit
+            </a>
           )}
         </li>
       ))}
