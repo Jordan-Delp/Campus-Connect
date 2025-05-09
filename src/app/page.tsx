@@ -7,6 +7,8 @@ export default function Home() {
       <Link href="/listings" className="text-blue-500 underline">
         View Listings
       </Link>
+      <hr />
+      <Link href="/dashboard" className="text-blue-600 underline">Your Dashboard</Link>
     </main>
   );
 }

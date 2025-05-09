@@ -1,5 +1,5 @@
 import React from 'react';
-import CreateListingForm from '@/app/components/CreateListingForm';
+import CreateListingForm from '@/components/CreateListingForm';
 
 export default function CreateListingPage() {
   return (

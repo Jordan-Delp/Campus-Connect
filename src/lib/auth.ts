@@ -19,7 +19,13 @@ export const authOptions: NextAuthOptions = {
 
         await dbConnect();
 
-        const user = await User.findOne({ email: credentials.email }) as { _id: string, name: string, email: string, password: string };
+        const user = await User.findOne({ email: credentials.email }) as {
+          _id: string;
+          name: string;
+          email: string;
+          password: string;
+        };
+
         if (!user) {
           throw new Error('No user found');
         }
@@ -38,5 +44,19 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth/signin',
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user && token) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
   },
 };

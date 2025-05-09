@@ -12,7 +12,7 @@ export default function SignInPage() {
     await signIn('credentials', {
       email,
       password,
-      callbackUrl: '/',
+      callbackUrl: '/dashboard',
     });
   };
 
