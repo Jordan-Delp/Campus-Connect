@@ -2,6 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
+import Image from 'next/image';
 
 interface Listing {
   _id: string;
@@ -50,11 +51,17 @@ export default function ListingList({ listings, showDelete = false, showEdit = f
         <div className="bg-white border border-gray-200 rounded-lg shadow hover:shadow-md transition overflow-hidden flex flex-col h-full">
           <Link href={`/listings/${listing._id}`} className="flex-1 block">
             {listing.imageUrl ? (
-              <img
+              <div className="relative w-full aspect-[4/3] bg-gray-100 rounded-t-lg overflow-hidden">
+              <Image
                 src={listing.imageUrl}
                 alt={listing.title}
-                className="w-full h-48 object-cover"
+                fill
+                className="object-cover object-center"
+                sizes="(max-width: 768px) 100vw, 33vw"
               />
+            </div>
+            
+            
             ) : (
               <div className="w-full h-48 bg-gray-100 text-gray-400 flex items-center justify-center text-sm">
                 No image

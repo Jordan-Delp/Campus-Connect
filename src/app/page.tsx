@@ -46,7 +46,7 @@ export default async function Home() {
                   <img
                     src={listing.imageUrl}
                     alt={listing.title}
-                    className="w-full h-40 object-cover"
+                    className="w-full h-70 object-cover"
                   />
                 ) : (
                   <div className="h-40 bg-gray-100 flex items-center justify-center text-sm text-gray-400 italic">
