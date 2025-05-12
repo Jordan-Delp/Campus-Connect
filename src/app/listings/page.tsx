@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import ListingList from '@/components/ListingList';
 import CategoryFilter from '@/components/CategoryFilter';
 
@@ -18,6 +19,13 @@ export default function ListingsPage() {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [filtered, setFiltered] = useState<Listing[]>([]);
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const searchFromURL = searchParams.get('search');
+    if (searchFromURL) setSearch(searchFromURL);
+  }, [searchParams]);
 
   useEffect(() => {
     fetch('/api/listings')
@@ -48,7 +56,7 @@ export default function ListingsPage() {
     <div className="bg-[#f9fafb] min-h-screen py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">Browse Listings</h1>
-  
+
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
           <input
             type="text"
@@ -63,7 +71,7 @@ export default function ListingsPage() {
             onReset={() => setCategory('')}
           />
         </div>
-  
+
         {filtered.length > 0 ? (
           <ListingList listings={filtered} />
         ) : (
@@ -72,5 +80,4 @@ export default function ListingsPage() {
       </div>
     </div>
   );
-  
 }

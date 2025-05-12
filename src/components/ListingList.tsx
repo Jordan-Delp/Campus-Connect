@@ -43,10 +43,8 @@ export default function ListingList({ listings, showDelete = false, showEdit = f
     <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {listings.map((listing) => (
         <li key={listing._id} className="relative">
-          <Link
-            href={`/listings/${listing._id}`}
-            className="block bg-white border border-gray-200 rounded-lg shadow hover:shadow-md transition overflow-hidden"
-          >
+        <div className="bg-white border border-gray-200 rounded-lg shadow hover:shadow-md transition overflow-hidden flex flex-col h-full">
+          <Link href={`/listings/${listing._id}`} className="flex-1 block">
             {listing.imageUrl ? (
               <img
                 src={listing.imageUrl}
@@ -65,13 +63,13 @@ export default function ListingList({ listings, showDelete = false, showEdit = f
               <p className="text-sm text-purple-600 font-medium">{listing.category}</p>
             </div>
           </Link>
-
+      
           {(showEdit || showDelete) && (
-            <div className="p-4 flex gap-4 border-t bg-white rounded-b-lg">
+            <div className="px-4 pb-4 flex gap-2 mt-auto">
               {showEdit && (
                 <Link
                   href={`/listings/edit/${listing._id}`}
-                  className="text-sm text-blue-600 font-medium hover:underline"
+                  className="inline-block px-3 py-1 text-sm font-medium text-blue-700 bg-blue-100 rounded-full hover:bg-blue-200 transition"
                 >
                   Edit
                 </Link>
@@ -79,14 +77,16 @@ export default function ListingList({ listings, showDelete = false, showEdit = f
               {showDelete && (
                 <button
                   onClick={() => handleDelete(listing._id)}
-                  className="text-sm text-red-600 font-medium hover:underline"
+                  className="inline-block px-3 py-1 text-sm font-medium text-red-700 bg-red-100 rounded-full hover:bg-red-200 transition"
                 >
                   Delete
                 </button>
               )}
             </div>
           )}
-        </li>
+        </div>
+      </li>
+      
       ))}
     </ul>
   );
