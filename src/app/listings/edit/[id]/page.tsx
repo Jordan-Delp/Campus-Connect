@@ -15,21 +15,22 @@ interface ListingType {
   userId: string;
 }
 
-export default async function EditListingPage({ params }: { params: { id: string } }) {
-  const session = await getServerSession(authOptions);
+export default async function EditListingPage(props: { params: Promise<{ id: string }> }) {
+  const { id } = await props.params;
 
+  const session = await getServerSession(authOptions);
   if (!session || !session.user?.id) {
     redirect('/auth/signin');
   }
 
   await dbConnect();
-  const listing = await Listing.findById(params.id).lean<ListingType>();
 
+  const listing = await Listing.findById(id).lean<ListingType>();
   if (!listing) {
     redirect('/not-found');
   }
 
-  if (listing.userId !== session.user.id) {
+  if (listing.userId.toString() !== session.user.id) {
     redirect('/dashboard');
   }
 
@@ -40,3 +41,4 @@ export default async function EditListingPage({ params }: { params: { id: string
     </main>
   );
 }
+
