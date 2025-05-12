@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
 interface Listing {
   _id: string;
@@ -41,14 +42,15 @@ export default function EditListingForm({ listing }: { listing: Listing }) {
       });
 
       if (res.ok) {
+        toast.success('Listing updated successfully!');
         router.push('/dashboard');
       } else {
         const data = await res.json();
-        alert(`Failed to update listing: ${data.message}`);
+        toast.error(`Failed to update listing: ${data.message}`);
       }
     } catch (err) {
       console.error('Update error:', err);
-      alert('An error occurred');
+      toast.error('An unexpected error occurred.');
     }
   };
 

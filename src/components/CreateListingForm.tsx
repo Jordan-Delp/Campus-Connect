@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import { toast } from 'react-hot-toast';
 
 const categoryOptions = [
   'Electronics',
@@ -53,7 +53,7 @@ export default function CreateListingForm() {
         const uploadResult = await uploadRes.json();
         imageUrl = `/uploads/${uploadResult.filename}`;
       } else {
-        alert('Image upload failed.');
+        toast.error('Image upload failed.');
         return;
       }
     }
@@ -72,6 +72,7 @@ export default function CreateListingForm() {
       });
 
       if (response.ok) {
+        toast.success('Listing created successfully!');
         setFormData({
           title: '',
           description: '',
@@ -79,14 +80,13 @@ export default function CreateListingForm() {
           category: '',
         });
         setFile(null);
-        alert('Listing created successfully!');
-        router.push('/dashboard')
+        router.push('/dashboard');
       } else {
-        alert('Failed to create listing.');
+        toast.error('Failed to create listing.');
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('An error occurred while creating the listing.');
+      toast.error('An unexpected error occurred.');
     }
   };
 

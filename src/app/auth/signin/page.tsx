@@ -4,6 +4,7 @@ import { signIn } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 export default function SignInPage() {
   const [email, setEmail] = useState('');
@@ -14,16 +15,25 @@ export default function SignInPage() {
   useEffect(() => {
     if (searchParams.get('error')) {
       setError(true);
+      toast.error('Invalid email or password');
     }
   }, [searchParams]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    await signIn('credentials', {
+    const result = await signIn('credentials', {
       email,
       password,
       callbackUrl: '/dashboard',
+      redirect: false,
     });
+
+    if (result?.ok) {
+      toast.success('Signed in successfully!');
+      window.location.href = result.url || '/dashboard';
+    } else {
+      toast.error('Invalid email or password');
+    }
   };
 
   return (
@@ -32,12 +42,6 @@ export default function SignInPage() {
         <h2 className="text-2xl font-bold text-center text-purple-700 mb-6">
           Sign In to CampusConnect
         </h2>
-
-        {error && (
-          <div className="bg-red-100 text-red-700 text-sm px-4 py-2 mb-4 rounded text-center">
-            Invalid email or password
-          </div>
-        )}
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>

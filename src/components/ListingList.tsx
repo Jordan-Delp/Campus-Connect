@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
+import { toast } from 'react-hot-toast';
 
 interface Listing {
   _id: string;
@@ -22,20 +23,23 @@ export default function ListingList({ listings, showDelete = false, showEdit = f
     const confirmed = confirm('Are you sure you want to delete this listing?');
     if (!confirmed) return;
 
+    const deletingToast = toast.loading('Deleting listing...');
+
     try {
       const res = await fetch(`/api/listings/${id}`, {
         method: 'DELETE',
       });
 
       if (res.ok) {
+        toast.success('Listing deleted.', { id: deletingToast });
         window.location.reload();
       } else {
         const data = await res.json();
-        alert(`Failed to delete: ${data.message}`);
+        toast.error(`Failed to delete: ${data.message}`, { id: deletingToast });
       }
     } catch (err) {
       console.error('Error deleting listing:', err);
-      alert('Unexpected error occurred');
+      toast.error('Unexpected error occurred.', { id: deletingToast });
     }
   };
 

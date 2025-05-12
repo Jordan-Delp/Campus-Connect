@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -15,17 +16,24 @@ export default function SignUpPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
+    const loadingToast = toast.loading('Creating account...');
 
-    if (response.ok) {
-      router.push('/auth/signin');
-    } else {
-      const data = await response.json();
-      alert(data.error || 'Registration failed');
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        toast.success('Account created! Redirecting to sign in...', { id: loadingToast });
+        router.push('/auth/signin');
+      } else {
+        const data = await response.json();
+        toast.error(data.error || 'Registration failed', { id: loadingToast });
+      }
+    } catch (error) {
+      toast.error('Unexpected error occurred.', { id: loadingToast });
     }
   };
 
