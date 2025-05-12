@@ -8,7 +8,6 @@ interface UserType {
   _id: string;
   name: string;
   email: string;
-  createdAt: string;
 }
 
 interface ListingType {
@@ -30,7 +29,7 @@ export default async function ListingDetailPage(props: {
   await dbConnect();
 
   const listing = await Listing.findById(id)
-    .populate('userId', 'name email createdAt')
+    .populate('userId', 'name email')
     .lean<ListingType>();
 
   if (!listing) return notFound();
@@ -76,15 +75,6 @@ export default async function ListingDetailPage(props: {
                 </p>
                 <p className="text-sm text-gray-700">
                   <strong>Email:</strong> {listing.userId.email ?? 'N/A'}
-                </p>
-                <p className="text-sm text-gray-500 italic">
-                  Member since{' '}
-                  {listing.userId.createdAt
-                    ? new Date(listing.userId.createdAt).toLocaleString('default', {
-                        month: 'short',
-                        year: 'numeric',
-                      })
-                    : 'Unknown'}
                 </p>
                 <a
                   href={`mailto:${listing.userId.email}`}
