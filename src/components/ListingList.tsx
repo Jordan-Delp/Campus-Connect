@@ -47,12 +47,16 @@ export default function ListingList({ listings, showDelete = false, showEdit = f
             href={`/listings/${listing._id}`}
             className="block bg-white border border-gray-200 rounded-lg shadow hover:shadow-md transition overflow-hidden"
           >
-            {listing.imageUrl && (
+            {listing.imageUrl ? (
               <img
                 src={listing.imageUrl}
                 alt={listing.title}
                 className="w-full h-48 object-cover"
               />
+            ) : (
+              <div className="w-full h-48 bg-gray-100 text-gray-400 flex items-center justify-center text-sm">
+                No image
+              </div>
             )}
             <div className="p-4">
               <h2 className="text-lg font-semibold text-gray-900">{listing.title}</h2>

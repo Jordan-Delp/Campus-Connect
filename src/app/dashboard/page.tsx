@@ -16,10 +16,15 @@ export default async function DashboardPage() {
   const listings = await Listing.find({ userId: session.user.id }).lean();
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Your Listings</h1>
-      <ListingList listings={JSON.parse(JSON.stringify(listings))} showDelete={true} showEdit={true} />
-
+    <div className="min-h-screen bg-gray-50 py-12 px-4">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-900 mb-6">Your Listings</h1>
+        <ListingList
+          listings={JSON.parse(JSON.stringify(listings))}
+          showDelete={true}
+          showEdit={true}
+        />
+      </div>
     </div>
   );
 }
