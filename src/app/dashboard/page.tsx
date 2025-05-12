@@ -19,7 +19,15 @@ export default async function DashboardPage() {
   return (
     <div className="bg-[#f9fafb] min-h-screen py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">Your Listings</h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-3xl font-bold text-gray-900">Your Listings</h1>
+          <Link
+            href="/listings/create"
+            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-sm font-medium transition"
+          >
+            + Create Listing
+          </Link>
+        </div>
 
         {listings.length > 0 ? (
           <ListingList
