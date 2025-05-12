@@ -16,7 +16,19 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "CampusConnect",
-  description: "Find and manage student listings with ease",
+  description: "Buy, sell, and trade with other students on your campus.",
+  keywords: ['campus', 'marketplace', 'students', 'listings', 'buy', 'sell'],
+  openGraph: {
+    title: 'CampusConnect',
+    description: 'A student marketplace for buying and selling on campus.',
+    type: 'website',
+    url: 'https://campusconnect.example.com',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'CampusConnect',
+    description: 'A student marketplace for buying and selling on campus.',
+  },
 };
 
 export default function RootLayout({
@@ -26,9 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SessionWrapper>
           <Navbar />
           {children}
