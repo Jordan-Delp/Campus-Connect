@@ -5,10 +5,12 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 
 interface UserType {
-    name: string;
-    email: string;
-    createdAt: string;
-  }
+  _id: string;
+  name: string;
+  email: string;
+  createdAt: string;
+}
+
   
   interface ListingType {
     _id: string;
@@ -37,9 +39,8 @@ interface UserType {
   if (!listing) return notFound();
 
   const session = await getServerSession(authOptions);
-  const isOwner = session?.user?.id && listing.userId && typeof listing.userId !== 'string'
-  ? session.user.id === (listing.userId as any)._id.toString()
-  : false;
+  const isOwner = session?.user?.id === listing.userId._id;
+
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">

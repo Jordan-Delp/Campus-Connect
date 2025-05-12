@@ -1,24 +1,42 @@
-import EditListingForm from '@/components/EditListingForm';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 import dbConnect from '@/lib/mongodb';
 import Listing from '@/models/Listing';
-import { notFound } from 'next/navigation';
+import EditListingForm from '@/components/EditListingForm';
 
-interface EditPageProps {
-  params: { id: string };
+interface ListingType {
+  _id: string;
+  title: string;
+  description: string;
+  price: number;
+  category: string;
+  imageUrl?: string;
+  userId: string;
 }
 
-export default async function EditPage(context: { params: { id: string } }) {
-    const { id } = await context.params;
-  
-    await dbConnect();
-    const listing = await Listing.findById(id).lean();
-  
-    if (!listing) return notFound();
-  
-    return (
-      <div className="p-6">
-        <h1 className="text-2xl font-bold mb-4">Edit Listing</h1>
-        <EditListingForm listing={JSON.parse(JSON.stringify(listing))} />
-      </div>
-    );
+export default async function EditListingPage({ params }: { params: { id: string } }) {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user?.id) {
+    redirect('/auth/signin');
   }
+
+  await dbConnect();
+  const listing = await Listing.findById(params.id).lean<ListingType>();
+
+  if (!listing) {
+    redirect('/not-found');
+  }
+
+  if (listing.userId !== session.user.id) {
+    redirect('/dashboard');
+  }
+
+  return (
+    <main className="p-6 max-w-2xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Edit Listing</h1>
+      <EditListingForm listing={JSON.parse(JSON.stringify(listing))} />
+    </main>
+  );
+}
