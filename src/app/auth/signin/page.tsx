@@ -1,20 +1,18 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
-export default function SignInPage() {
+function SignInForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const searchParams = useSearchParams();
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (searchParams.get('error')) {
-      setError(true);
       toast.error('Invalid email or password');
     }
   }, [searchParams]);
@@ -80,5 +78,13 @@ export default function SignInPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense fallback={<div className="text-center mt-10">Loading...</div>}>
+      <SignInForm />
+    </Suspense>
   );
 }

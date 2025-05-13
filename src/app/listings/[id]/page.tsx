@@ -21,21 +21,23 @@ interface ListingType {
   userId: UserType;
 }
 
-export default async function ListingDetailPage(props: {
-  params: Promise<{ id: string }>;
+export default async function ListingDetailPage({
+  params,
+}: {
+  params: { id: string };
 }) {
-  const { id } = await props.params;
+  const { id } = params;
 
   await dbConnect();
 
   const listing = await Listing.findById(id)
-    .populate('userId', 'name email')
+    .populate('userId', 'name email createdAt')
     .lean<ListingType>();
 
   if (!listing) return notFound();
 
   const session = await getServerSession(authOptions);
-  const isOwner = session?.user?.id === listing.userId._id.toString();
+  const isOwner = session?.user?.id === listing.userId?._id?.toString();
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
@@ -56,7 +58,6 @@ export default async function ListingDetailPage(props: {
           <div className="md:col-span-2 space-y-4">
             <h1 className="text-3xl font-bold text-gray-900">{listing.title}</h1>
             <p className="text-gray-700 text-lg">{listing.description}</p>
-
             <div className="text-xl font-semibold text-purple-600">${listing.price}</div>
             <div className="text-sm text-gray-600">
               <span className="font-medium">Category:</span> {listing.category}
@@ -66,7 +67,6 @@ export default async function ListingDetailPage(props: {
                 <span className="font-medium">Location:</span> {listing.location}
               </div>
             )}
-
             {!isOwner && listing.userId && (
               <div className="mt-8 border-t pt-6 bg-gray-50 border rounded-md p-4">
                 <h3 className="font-semibold text-gray-800 mb-2">Seller Information</h3>

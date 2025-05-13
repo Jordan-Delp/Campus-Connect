@@ -2,9 +2,20 @@ import Link from 'next/link';
 import Listing from '@/models/Listing';
 import dbConnect from '@/lib/mongodb';
 
+interface Listing {
+  _id: string;
+  title: string;
+  description: string;
+  price: number;
+  category: string;
+  imageUrl?: string;
+}
+
 export default async function Home() {
   await dbConnect();
-  const featuredListings = await Listing.find().limit(6).lean();
+
+  const featuredListings = (await Listing.find().limit(6).lean()) as unknown as Listing[];
+
 
   return (
     <main className="bg-gray-50 min-h-screen">
@@ -36,7 +47,7 @@ export default async function Home() {
 
         {featuredListings.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {featuredListings.map((listing: any) => (
+            {featuredListings.map((listing) => (
               <Link
                 key={listing._id}
                 href={`/listings/${listing._id}`}
@@ -46,10 +57,10 @@ export default async function Home() {
                   <img
                     src={listing.imageUrl}
                     alt={listing.title}
-                    className="w-full h-70 object-cover"
+                    className="w-full h-72 object-cover"
                   />
                 ) : (
-                  <div className="h-40 bg-gray-100 flex items-center justify-center text-sm text-gray-400 italic">
+                  <div className="h-72 bg-gray-100 flex items-center justify-center text-sm text-gray-400 italic">
                     No image
                   </div>
                 )}
