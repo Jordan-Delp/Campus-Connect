@@ -39,10 +39,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground antialiased`}>
         <SessionWrapper>
           <Navbar />
-          <Toaster position="top-right" toastOptions={{ duration: 3000 }} /> 
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 3000,
+              style: {
+                background: '#161616',
+                color: '#f5f5f5',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.35)',
+              },
+            }}
+          />
           {children}
         </SessionWrapper>
       </body>

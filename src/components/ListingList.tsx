@@ -45,42 +45,55 @@ export default function ListingList({ listings, showDelete = false, showEdit = f
   };
 
   return (
-    <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {listings.map((listing) => (
-        <li key={listing._id} className="relative">
-        <div className="bg-white border border-gray-200 rounded-lg shadow hover:shadow-md transition overflow-hidden flex flex-col h-full">
-          <Link href={`/listings/${listing._id}`} className="flex-1 block">
+        <li key={listing._id} className="relative h-full">
+          <div className="group flex h-full flex-col overflow-hidden rounded-[1.35rem] border border-white/8 bg-[#161616] shadow-[0_18px_40px_rgba(0,0,0,0.28)] transition duration-300 hover:-translate-y-1 hover:border-violet-400/25 hover:shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
+          <Link href={`/listings/${listing._id}`} className="flex flex-1 flex-col">
             {listing.imageUrl ? (
-              <div className="relative w-full aspect-[4/3] bg-gray-100 rounded-t-lg overflow-hidden">
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#111111]">
               <Image
                 src={listing.imageUrl}
                 alt={listing.title}
                 fill
-                className="object-cover object-center"
+                className="object-cover object-center transition duration-500 group-hover:scale-[1.03]"
                 sizes="(max-width: 768px) 100vw, 33vw"
               />
             </div>
             
             
             ) : (
-              <div className="w-full h-48 bg-gray-100 text-gray-400 flex items-center justify-center text-sm">
+              <div className="flex h-48 w-full items-center justify-center bg-[#111111] text-sm text-zinc-500">
                 No image
               </div>
             )}
-            <div className="p-4">
-              <h2 className="text-lg font-semibold text-gray-900">{listing.title}</h2>
-              <p className="text-sm text-gray-600 line-clamp-2">{listing.description}</p>
-              <p className="mt-2 text-gray-800 font-semibold">${listing.price}</p>
-              <p className="text-sm text-purple-600 font-medium">{listing.category}</p>
+            <div className="flex flex-1 flex-col gap-3 p-5">
+              <div className="flex items-start justify-between gap-3">
+                <h2 className="text-[1.05rem] font-medium tracking-tight text-white">
+                  {listing.title}
+                </h2>
+                <p className="shrink-0 rounded-full border border-violet-400/20 bg-violet-500/10 px-3 py-1 text-sm font-semibold text-violet-300">
+                  ${listing.price}
+                </p>
+              </div>
+              <p className="line-clamp-2 text-sm leading-6 text-zinc-400">
+                {listing.description}
+              </p>
+              <div className="mt-auto flex items-center justify-between gap-3 pt-2">
+                <p className="inline-flex rounded-full border border-white/8 bg-white/4 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-zinc-300">
+                  {listing.category}
+                </p>
+                <span className="text-xs text-zinc-500">View details</span>
+              </div>
             </div>
           </Link>
       
           {(showEdit || showDelete) && (
-            <div className="px-4 pb-4 flex gap-2 mt-auto">
+            <div className="mt-auto flex gap-2 border-t border-white/8 px-5 py-4">
               {showEdit && (
                 <Link
                   href={`/listings/edit/${listing._id}`}
-                  className="inline-block px-3 py-1 text-sm font-medium text-blue-700 bg-blue-100 rounded-full hover:bg-blue-200 transition"
+                  className="inline-flex items-center rounded-full border border-white/8 bg-white/5 px-3 py-1.5 text-sm font-medium text-zinc-200 transition hover:border-violet-400/25 hover:bg-violet-500/10 hover:text-white"
                 >
                   Edit
                 </Link>
@@ -88,7 +101,7 @@ export default function ListingList({ listings, showDelete = false, showEdit = f
               {showDelete && (
                 <button
                   onClick={() => handleDelete(listing._id)}
-                  className="inline-block px-3 py-1 text-sm font-medium text-red-700 bg-red-100 rounded-full hover:bg-red-200 transition"
+                  className="inline-flex items-center rounded-full border border-white/8 bg-white/5 px-3 py-1.5 text-sm font-medium text-zinc-200 transition hover:border-red-400/30 hover:bg-red-500/10 hover:text-white"
                 >
                   Delete
                 </button>

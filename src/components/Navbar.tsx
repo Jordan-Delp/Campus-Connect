@@ -22,34 +22,36 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-gradient-to-r from-purple-900 to-purple-700 text-white shadow-lg">
+    <nav className="sticky top-0 z-50 border-b border-white/8 bg-[#0a0a0a]/85 text-white backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="text-xl font-bold flex items-center space-x-2">
-            <span className="text-white text-xl">⬤</span>
-            <span>CampusConnect</span>
+        <div className="flex h-18 items-center justify-between gap-4 py-3">
+          <Link href="/" className="flex items-center gap-3 text-sm font-semibold tracking-[0.22em] uppercase text-white">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-violet-400/30 bg-violet-500/10 text-violet-300 shadow-[0_0_20px_rgba(139,92,246,0.18)]">
+              CC
+            </span>
+            <span className="hidden sm:block">Campus Connect</span>
           </Link>
 
-          {/* Center Search (Desktop Only) */}
-          <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-1 justify-center px-6">
+          <form
+            onSubmit={handleSearchSubmit}
+            className="hidden md:flex flex-1 justify-center px-6"
+          >
             <input
               type="text"
               placeholder="Search listings..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full max-w-md rounded-full border px-4 py-2 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-300 bg-white shadow-sm"
+              className="w-full max-w-xl rounded-full border border-white/10 bg-[#141414] px-5 py-3 text-sm text-white placeholder:text-zinc-500 shadow-[0_10px_30px_rgba(0,0,0,0.22)] transition focus:border-violet-400/50 focus:bg-[#171717] focus:outline-none focus:ring-2 focus:ring-violet-500/30"
             />
           </form>
 
-          {/* Desktop Links */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center gap-2">
             <Link
               href="/listings"
-              className={`px-3 py-1.5 rounded-md text-sm font-medium transition ${
+              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                 pathname.startsWith('/listings')
-                  ? 'bg-white text-purple-700'
-                  : 'hover:bg-purple-700/20'
+                  ? 'border border-violet-400/30 bg-violet-500/15 text-violet-200 shadow-[0_0_0_1px_rgba(139,92,246,0.18)]'
+                  : 'border border-white/10 bg-[#141414] text-zinc-200 hover:border-violet-400/25 hover:bg-[#1a1a1a] hover:text-white'
               }`}
             >
               Listings
@@ -59,17 +61,17 @@ export default function Navbar() {
               <>
                 <Link
                   href="/dashboard"
-                  className={`px-3 py-1.5 rounded-md text-sm font-medium transition ${
+                  className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                     pathname === '/dashboard'
-                      ? 'bg-white text-purple-700'
-                      : 'hover:bg-purple-700/20'
+                      ? 'border border-violet-400/30 bg-violet-500/15 text-violet-200 shadow-[0_0_0_1px_rgba(139,92,246,0.18)]'
+                      : 'border border-white/10 bg-[#141414] text-zinc-200 hover:border-violet-400/25 hover:bg-[#1a1a1a] hover:text-white'
                   }`}
                 >
                   Dashboard
                 </Link>
                 <button
                   onClick={() => signOut()}
-                  className="text-sm bg-red-500 text-white px-4 py-1.5 rounded-full hover:bg-red-600 transition"
+                  className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-zinc-200 transition hover:border-white/15 hover:bg-white/10 hover:text-white"
                 >
                   Sign Out
                 </button>
@@ -78,13 +80,13 @@ export default function Navbar() {
               <>
                 <Link
                   href="/auth/signin"
-                  className="px-3 py-1.5 rounded-md text-sm font-medium hover:bg-purple-700/20 transition"
+                  className="rounded-full px-4 py-2 text-sm font-medium text-zinc-300 transition hover:bg-white/5 hover:text-white"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/auth/signup"
-                  className="rounded-full bg-white text-purple-700 px-4 py-2 text-sm font-semibold hover:bg-purple-100 transition"
+                  className="rounded-full bg-violet-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.25)] transition hover:bg-violet-400"
                 >
                   Sign Up
                 </Link>
@@ -92,47 +94,49 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile Toggle */}
-          <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-white text-2xl">
-            ☰
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:bg-white/10"
+            aria-label="Toggle navigation"
+          >
+            <span className="text-lg">☰</span>
           </button>
         </div>
 
-        {/* Mobile Dropdown */}
         {mobileOpen && (
-          <div className="md:hidden mt-3 space-y-3 text-white">
-            <form onSubmit={handleSearchSubmit}>
+          <div className="md:hidden space-y-3 border-t border-white/8 pb-4 pt-4 text-white">
+            <form onSubmit={handleSearchSubmit} className="pt-1">
               <input
                 type="text"
                 placeholder="Search listings..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-full border px-4 py-2 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-300 bg-white"
+                className="w-full rounded-full border border-white/10 bg-[#141414] px-5 py-3 text-sm text-white placeholder:text-zinc-500 focus:border-violet-400/50 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
               />
             </form>
-            <Link href="/listings" className="block text-sm px-3 py-2 rounded-md hover:bg-purple-700/30">
+            <Link href="/listings" className="block rounded-full px-4 py-3 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
               Listings
             </Link>
             {session?.user ? (
               <>
-                <Link href="/dashboard" className="block text-sm px-3 py-2 rounded-md hover:bg-purple-700/30">
+                <Link href="/dashboard" className="block rounded-full px-4 py-3 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
                   Dashboard
                 </Link>
                 <button
                   onClick={() => signOut()}
-                  className="block w-full bg-red-500 rounded-full px-4 py-2 text-sm text-white text-center hover:bg-red-600"
+                  className="block w-full rounded-full border border-white/10 bg-white/5 px-4 py-3 text-sm text-center text-zinc-200 hover:bg-white/10 hover:text-white"
                 >
                   Sign Out
                 </button>
               </>
             ) : (
               <>
-                <Link href="/auth/signin" className="block text-sm px-3 py-2 rounded-md hover:bg-purple-700/30">
+                <Link href="/auth/signin" className="block rounded-full px-4 py-3 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
                   Sign In
                 </Link>
                 <Link
                   href="/auth/signup"
-                  className="block w-full bg-white text-purple-700 rounded-full px-4 py-2 text-sm text-center hover:bg-purple-100"
+                  className="block w-full rounded-full bg-violet-500 px-4 py-3 text-sm text-center font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.25)] hover:bg-violet-400"
                 >
                   Sign Up
                 </Link>

@@ -67,74 +67,76 @@ export default function CreateListingForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white border border-purple-100 shadow-md rounded-lg p-6 space-y-6"
+      className="space-y-6 rounded-[2rem] border border-white/8 bg-[#111111] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.34)] sm:p-8"
     >
       <div>
-        <label className="block text-sm font-medium text-gray-800">Title</label>
+        <label className="mb-2 block text-sm font-medium text-zinc-300">Title</label>
         <input
           type="text"
           name="title"
           value={formData.title}
           onChange={handleChange}
           required
-          className="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-white text-black shadow-sm"
+          className="w-full rounded-2xl border border-white/10 bg-[#151515] px-4 py-3 text-white shadow-[0_10px_30px_rgba(0,0,0,0.2)] transition focus:border-violet-400/50 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-800">Description</label>
+        <label className="mb-2 block text-sm font-medium text-zinc-300">Description</label>
         <textarea
           name="description"
           value={formData.description}
           onChange={handleChange}
           required
-          className="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-white text-black shadow-sm"
+          className="min-h-36 w-full rounded-2xl border border-white/10 bg-[#151515] px-4 py-3 text-white shadow-[0_10px_30px_rgba(0,0,0,0.2)] transition focus:border-violet-400/50 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-800">Price ($)</label>
+        <label className="mb-2 block text-sm font-medium text-zinc-300">Price ($)</label>
         <input
           type="number"
           name="price"
           value={formData.price}
           onChange={handleChange}
           required
-          className="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-white text-black shadow-sm"
+          className="w-full rounded-2xl border border-white/10 bg-[#151515] px-4 py-3 text-white shadow-[0_10px_30px_rgba(0,0,0,0.2)] transition focus:border-violet-400/50 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-800">Category</label>
+        <label className="mb-2 block text-sm font-medium text-zinc-300">Category</label>
         <select
           name="category"
           value={formData.category}
           onChange={handleChange}
           required
-          className="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-white text-black shadow-sm"
+          className="w-full rounded-2xl border border-white/10 bg-[#151515] px-4 py-3 text-white shadow-[0_10px_30px_rgba(0,0,0,0.2)] transition focus:border-violet-400/50 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
         >
           <option value="">Select a category</option>
           {categoryOptions.map((option) => (
-            <option key={option}>{option}</option>
+            <option key={option} value={option}>
+              {option}
+            </option>
           ))}
         </select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-800">Image URL (optional)</label>
+        <label className="mb-2 block text-sm font-medium text-zinc-300">Image URL (optional)</label>
         <input
           type="url"
           name="imageUrl"
           value={formData.imageUrl}
           onChange={handleChange}
           placeholder="https://example.com/image.jpg"
-          className="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-white text-black shadow-sm"
+          className="w-full rounded-2xl border border-white/10 bg-[#151515] px-4 py-3 text-white shadow-[0_10px_30px_rgba(0,0,0,0.2)] transition placeholder:text-zinc-500 focus:border-violet-400/50 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
         />
       </div>
 
       <button
         type="submit"
-        className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded-md shadow transition"
+        className="w-full rounded-full bg-violet-500 px-4 py-3.5 font-semibold text-white shadow-[0_0_30px_rgba(139,92,246,0.22)] transition hover:bg-violet-400"
       >
         Create Listing
       </button>
