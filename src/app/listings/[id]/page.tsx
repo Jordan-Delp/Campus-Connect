@@ -21,12 +21,10 @@ interface ListingType {
   userId: UserType;
 }
 
-export default async function ListingDetailPage({
-  params,
-}: {
-  params: { id: string };
+export default async function ListingDetailPage(props: {
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = params;
+  const { id } = await props.params;
 
   await dbConnect();
 
