@@ -111,6 +111,18 @@ export default function EditListingForm({ listing }: { listing: Listing }) {
         </select>
       </div>
 
+      <div>
+        <label className="block text-sm font-medium text-gray-800">Image URL (optional)</label>
+        <input
+          name="imageUrl"
+          type="url"
+          value={formData.imageUrl || ''}
+          onChange={handleChange}
+          placeholder="https://example.com/image.jpg"
+          className="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-white text-black shadow-sm"
+        />
+      </div>
+
       <button
         type="submit"
         className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded-md shadow transition"

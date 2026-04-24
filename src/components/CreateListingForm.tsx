@@ -21,8 +21,8 @@ export default function CreateListingForm() {
     description: '',
     price: '',
     category: '',
+    imageUrl: '',
   });
-  const [file, setFile] = useState<File | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -30,33 +30,8 @@ export default function CreateListingForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    let imageUrl = '';
-    if (file) {
-      const uploadData = new FormData();
-      uploadData.append('file', file);
-
-      const uploadRes = await fetch('/api/upload', {
-        method: 'POST',
-        body: uploadData,
-      });
-
-      if (uploadRes.ok) {
-        const uploadResult = await uploadRes.json();
-        imageUrl = `/uploads/${uploadResult.filename}`;
-      } else {
-        toast.error('Image upload failed.');
-        return;
-      }
-    }
 
     try {
       const response = await fetch('/api/listings', {
@@ -67,7 +42,6 @@ export default function CreateListingForm() {
         body: JSON.stringify({
           ...formData,
           price: parseFloat(formData.price),
-          imageUrl,
         }),
       });
 
@@ -78,8 +52,8 @@ export default function CreateListingForm() {
           description: '',
           price: '',
           category: '',
+          imageUrl: '',
         });
-        setFile(null);
         router.push('/dashboard');
       } else {
         toast.error('Failed to create listing.');
@@ -147,12 +121,13 @@ export default function CreateListingForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-800">Image</label>
+        <label className="block text-sm font-medium text-gray-800">Image URL (optional)</label>
         <input
-          type="file"
-          name="image"
-          accept="image/*"
-          onChange={handleFileChange}
+          type="url"
+          name="imageUrl"
+          value={formData.imageUrl}
+          onChange={handleChange}
+          placeholder="https://example.com/image.jpg"
           className="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-white text-black shadow-sm"
         />
       </div>
