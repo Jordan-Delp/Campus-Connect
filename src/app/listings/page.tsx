@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ListingList from '@/components/ListingList';
 import CategoryFilter from '@/components/CategoryFilter';
@@ -15,6 +15,14 @@ interface Listing {
 }
 
 export default function ListingsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f9fafb] flex items-center justify-center text-gray-500">Loading...</div>}>
+      <ListingsContent />
+    </Suspense>
+  );
+}
+
+function ListingsContent() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
