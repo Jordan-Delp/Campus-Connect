@@ -3,7 +3,6 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ListingList from '@/components/ListingList';
-import CategoryFilter from '@/components/CategoryFilter';
 
 interface Listing {
   _id: string;
@@ -13,6 +12,8 @@ interface Listing {
   category: string;
   imageUrl?: string;
 }
+
+const categories = ['Books', 'Furniture', 'Clothing', 'Electronics', 'Housing', 'Other'];
 
 export default function ListingsPage() {
   return (
@@ -70,7 +71,7 @@ function ListingsContent() {
               Browse listings
             </h1>
             <p className="mt-3 text-sm leading-6 text-zinc-400 sm:text-base">
-              Search by title or description, then narrow by category using a clean dark filter rail.
+              Search by title or description, then narrow by category using quick filter chips.
             </p>
             <p className="mt-4 text-sm text-zinc-500">
               {filtered.length} item{filtered.length === 1 ? '' : 's'} visible
@@ -80,6 +81,34 @@ function ListingsContent() {
           </div>
 
           <div className="mt-7 flex flex-col gap-4 lg:flex-row lg:items-center">
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setCategory('')}
+                className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                  !category
+                    ? 'border-violet-400/30 bg-violet-500/15 text-violet-200 shadow-[0_0_0_1px_rgba(139,92,246,0.16)]'
+                    : 'border-white/10 bg-[#151515] text-zinc-300 hover:border-violet-400/25 hover:bg-[#1a1a1a] hover:text-white'
+                }`}
+              >
+                All
+              </button>
+              {categories.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => setCategory(item)}
+                  className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                    category === item
+                      ? 'border-violet-400/30 bg-violet-500/15 text-violet-200 shadow-[0_0_0_1px_rgba(139,92,246,0.16)]'
+                      : 'border-white/10 bg-[#151515] text-zinc-300 hover:border-violet-400/25 hover:bg-[#1a1a1a] hover:text-white'
+                  }`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+
             <div className="flex-1">
               <input
                 type="text"
@@ -89,11 +118,6 @@ function ListingsContent() {
                 className="w-full rounded-full border border-white/10 bg-[#151515] px-5 py-3 text-sm text-white placeholder:text-zinc-500 shadow-[0_10px_30px_rgba(0,0,0,0.22)] transition focus:border-violet-400/50 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
               />
             </div>
-            <CategoryFilter
-              selected={category}
-              onChange={setCategory}
-              onReset={() => setCategory('')}
-            />
           </div>
         </div>
 

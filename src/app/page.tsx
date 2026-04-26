@@ -22,8 +22,7 @@ export default async function Home() {
       <section className="mx-auto max-w-7xl px-4 pb-8 pt-10 sm:px-6 lg:px-8 lg:pb-12 lg:pt-16">
         <div className="relative overflow-hidden rounded-[2rem] border border-white/8 bg-[#111111] px-6 py-12 shadow-[0_24px_80px_rgba(0,0,0,0.42)] sm:px-10 lg:px-12 lg:py-16">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.22),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.05),transparent_24%)]" />
-          <div className="relative grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
-            <div className="max-w-3xl">
+          <div className="relative max-w-3xl">
               <p className="mb-5 inline-flex rounded-full border border-violet-400/20 bg-violet-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em] text-violet-300">
                 Campus marketplace
               </p>
@@ -48,21 +47,6 @@ export default async function Home() {
                 </Link>
               </div>
             </div>
-
-            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-              {[
-                { label: 'Featured', value: 'Marketplace', meta: 'Dark browsing flow' },
-                { label: 'Accent', value: 'Violet', meta: 'Only highlight color' },
-                { label: 'Layout', value: 'Open', meta: 'Breathing room first' },
-              ].map((item) => (
-                <div key={item.label} className="rounded-2xl border border-white/8 bg-[#161616] p-4">
-                  <p className="text-xs uppercase tracking-[0.22em] text-zinc-500">{item.label}</p>
-                  <p className="mt-2 text-xl font-semibold text-white">{item.value}</p>
-                  <p className="mt-1 text-sm text-zinc-400">{item.meta}</p>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
