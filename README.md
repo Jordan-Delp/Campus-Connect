@@ -20,7 +20,7 @@ Built with **Next.js 15 (App Router)**, **MongoDB**, **NextAuth.js**, and **Tail
 
 ## Live Demo
 
-> Coming soon 
+ campus-connect-dev.vercel.app
 
 ---
 
@@ -30,7 +30,7 @@ Built with **Next.js 15 (App Router)**, **MongoDB**, **NextAuth.js**, and **Tail
 - **Backend:** Node.js API routes (in Next.js)
 - **Database:** MongoDB with Mongoose
 - **Auth:** NextAuth.js (Credentials Provider)
-- **Storage:** File upload to `public/uploads` (for local demo)
+- **Storage:** Cloudinary (cloud image hosting)
 
 ---
 
@@ -57,7 +57,12 @@ Create a `.env.local` file in the root directory and add the following:
 MONGODB_URI=your_mongo_connection_string
 NEXTAUTH_URL=http://localhost:3000
 AUTH_SECRET=generate_a_secure_secret
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 ```
+
+> See `.env.example` for all required variables and where to find them.
 
 You can generate a secure secret with:
 
@@ -68,7 +73,7 @@ openssl rand -base64 32
 ### 4. Seed demo listings (optional)
 
 ```bash
-MONGODB_URI="your_mongo_connection_string" npx tsx scripts/seed.ts npx tsx scripts/seed.ts
+MONGODB_URI="your_mongo_connection_string" npx tsx scripts/seed.ts 
 ```
 
 > This will populate your database with 3 demo listings (MacBook, Textbook, Mini Fridge).
@@ -101,7 +106,6 @@ src/
 |── components/        # Reusable UI components
 |── lib/               # DB and auth utilities
 |── models/            # Mongoose models (Listing, User)
-|── public/uploads/    # Image uploads 
 |── scripts/           # Seed script for demo data
 ```
 
@@ -109,7 +113,6 @@ src/
 
 ## 💡 Future Improvements
 
-- Image upload to cloud (e.g. Cloudinary, S3)
 - Search engine optimization (SEO metadata)
 - Pagination or infinite scroll
 - Admin/moderation tools

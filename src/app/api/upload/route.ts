@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import path from 'path';
-import fs from 'fs/promises';
+import { v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
@@ -11,15 +16,17 @@ export async function POST(req: NextRequest) {
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
-  const filename = file.name.replace(/\s+/g, '_');
-  const uploadDir = path.join(process.cwd(), 'public', 'uploads');
 
-  try {
-    await fs.mkdir(uploadDir, { recursive: true });
-    await fs.writeFile(path.join(uploadDir, filename), buffer);
-    return NextResponse.json({ message: 'File uploaded successfully', filename }, { status: 201 });
-  } catch (error) {
-    console.error('Error uploading file:', error);
-    return NextResponse.json({ error: 'Failed to upload file' }, { status: 500 });
-  }
+  const url = await new Promise<string>((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder: 'campus-connect' },
+      (error, result) => {
+        if (error || !result) return reject(error ?? new Error('No result'));
+        resolve(result.secure_url);
+      }
+    );
+    stream.end(buffer);
+  });
+
+  return NextResponse.json({ url }, { status: 201 });
 }

@@ -23,11 +23,39 @@ export default function CreateListingForm() {
     category: '',
     imageUrl: '',
   });
+  const [uploading, setUploading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setImagePreview(URL.createObjectURL(file));
+    setUploading(true);
+
+    try {
+      const data = new FormData();
+      data.append('file', file);
+
+      const res = await fetch('/api/upload', { method: 'POST', body: data });
+      const json = await res.json();
+
+      if (!res.ok) throw new Error(json.error ?? 'Upload failed');
+
+      setFormData((prev) => ({ ...prev, imageUrl: json.url }));
+    } catch (err) {
+      console.error(err);
+      toast.error('Image upload failed. Please try again.');
+      setImagePreview(null);
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,9 +64,7 @@ export default function CreateListingForm() {
     try {
       const response = await fetch('/api/listings', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
           price: parseFloat(formData.price),
@@ -47,13 +73,8 @@ export default function CreateListingForm() {
 
       if (response.ok) {
         toast.success('Listing created successfully!');
-        setFormData({
-          title: '',
-          description: '',
-          price: '',
-          category: '',
-          imageUrl: '',
-        });
+        setFormData({ title: '', description: '', price: '', category: '', imageUrl: '' });
+        setImagePreview(null);
         router.push('/dashboard');
       } else {
         toast.error('Failed to create listing.');
@@ -123,20 +144,36 @@ export default function CreateListingForm() {
       </div>
 
       <div>
-        <label className="mb-2 block text-sm font-medium text-zinc-300">Image URL (optional)</label>
-        <input
-          type="url"
-          name="imageUrl"
-          value={formData.imageUrl}
-          onChange={handleChange}
-          placeholder="https://example.com/image.jpg"
-          className="w-full rounded-2xl border border-white/10 bg-[#151515] px-4 py-3 text-white shadow-[0_10px_30px_rgba(0,0,0,0.2)] transition placeholder:text-zinc-500 focus:border-violet-400/50 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
-        />
+        <label className="mb-2 block text-sm font-medium text-zinc-300">
+          Image{' '}
+          <span className="text-zinc-500">(optional)</span>
+        </label>
+
+        <label className="flex cursor-pointer items-center justify-center gap-3 rounded-2xl border border-dashed border-white/20 bg-[#151515] px-4 py-5 transition hover:border-violet-400/50">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="sr-only"
+          />
+          <span className="text-sm text-zinc-400">
+            {uploading ? 'Uploading…' : imagePreview ? 'Change image' : 'Choose an image'}
+          </span>
+        </label>
+
+        {imagePreview && (
+          <img
+            src={imagePreview}
+            alt="Preview"
+            className="mt-3 h-40 w-full rounded-2xl object-cover opacity-80"
+          />
+        )}
       </div>
 
       <button
         type="submit"
-        className="w-full rounded-full bg-violet-500 px-4 py-3.5 font-semibold text-white shadow-[0_0_30px_rgba(139,92,246,0.22)] transition hover:bg-violet-400"
+        disabled={uploading}
+        className="w-full rounded-full bg-violet-500 px-4 py-3.5 font-semibold text-white shadow-[0_0_30px_rgba(139,92,246,0.22)] transition hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-50"
       >
         Create Listing
       </button>
