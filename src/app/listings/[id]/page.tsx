@@ -3,6 +3,7 @@ import dbConnect from '@/lib/mongodb';
 import Listing from '@/models/Listing';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import CopyEmailButton from '@/components/CopyEmailButton';
 
 interface UserType {
   _id: string;
@@ -109,12 +110,7 @@ export default async function ListingDetailPage(props: {
                     <span className="text-zinc-500">Email:</span> {listing.userId.email ?? 'N/A'}
                   </p>
                 </div>
-                <a
-                  href={`mailto:${listing.userId.email}`}
-                  className="mt-5 inline-flex items-center justify-center rounded-full bg-violet-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.22)] transition hover:bg-violet-400"
-                >
-                  Contact Seller
-                </a>
+                <CopyEmailButton email={listing.userId.email} />
               </div>
             )}
           </div>
