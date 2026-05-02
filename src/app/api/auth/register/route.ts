@@ -4,7 +4,8 @@ import dbConnect from '@/lib/mongodb';
 import User from '@/models/User';
 
 export async function POST(request: Request) {
-  const { name, email, password } = await request.json();
+  const { name, email: rawEmail, password } = await request.json();
+  const email = rawEmail?.toLowerCase();
 
   if (!name || !email || !password) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
