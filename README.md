@@ -20,7 +20,7 @@ Built with **Next.js 15 (App Router)**, **MongoDB**, **NextAuth.js**, and **Tail
 
 ## Live Demo
 
- campus-connect-dev.vercel.app
+ https://campus-connect-prod.vercel.app
 
 ---
 
